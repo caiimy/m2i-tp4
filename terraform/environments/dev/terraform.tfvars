@@ -1,3 +1,6 @@
+# Account Environment
+env = "dev"
+
 # Account region
 region = "europe_west1"
 
