@@ -51,3 +51,31 @@ jobs:
       with:
         name: pull docker image
         path: ./myimage
+
+    # - name: Docker Scout
+      # id: docker-scout
+      # if: ${{ github.event_name == 'pull_request' }}
+      # uses: docker/scout-action@v1
+      # with:
+      #   command: compare
+      #   image: ${{ steps.meta.outputs.tags }}
+      #   to: ${{ secrets.DOCKER_USERNAME }}/myimage:1.0.0
+      #   ignore-unchanged: true
+      #   only-severities: critical,high
+      #   token: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Scan image for vulnerabilities
+      uses: docker://docker/scout:latest
+      with:
+        args: analyze --image ${{ secrets.DOCKER_USERNAME }}/myimage:1.0.0
+    
+    - name: Check scan results  
+      run: |
+        scout_exit_code=$?
+        if [ $scout_exit_code -eq 1 ] 
+        then
+          echo "Vulnerabilities found in image"
+          exit 1
+        else 
+          echo "No vulnerabilities found in image"
+        fi
+        
