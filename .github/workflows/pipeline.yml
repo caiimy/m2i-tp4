@@ -47,7 +47,7 @@ jobs:
     steps:
 
     - name: Dowload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/download-artifact@v3
       with:
         name: pull docker image
         path: ./myimage
@@ -78,4 +78,3 @@ jobs:
         else 
           echo "No vulnerabilities found in image"
         fi
-        
