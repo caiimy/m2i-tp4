@@ -39,7 +39,7 @@ jobs:
     - name: Scan image for vulnerabilities
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: 'myimage:1.0.0'
+        image-ref: '${{ secrets.DOCKER_USERNAME }}/myimage:1.0.0'
         format: 'table'
         exit-code: '1'
         ignore-unfixed: true
