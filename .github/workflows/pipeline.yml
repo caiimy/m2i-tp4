@@ -32,6 +32,8 @@ jobs:
     - name: Pull image
       run: | 
         docker pull ${{ secrets.DOCKER_USERNAME }}/myimage:1.0.0
+        echo " ------------"
+        ls
 
     - name: Upload pull image
       uses: actions/upload-artifact@v3
