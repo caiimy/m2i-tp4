@@ -36,8 +36,6 @@ jobs:
       run: | 
         docker pull ${{ secrets.DOCKER_USERNAME }}/myimage:1.0.0
 
-    steps:
-
     - name: Scan image for vulnerabilities
       uses: docker://docker/scout:latest
       with:
