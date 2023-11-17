@@ -45,3 +45,10 @@ jobs:
         ignore-unfixed: true
         vuln-type: 'os,library'
         severity: 'CRITICAL'
+    
+    if dev alors terraform apply tfvars dev
+      deployer GCP VM DEV
+    if test alors terraform apply tfvars test
+      deployer GCP VM TEST
+    if prof alors terraform apply tfvars prod
+      deployer cluster kub
