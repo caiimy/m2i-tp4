@@ -51,9 +51,6 @@ resource "google_compute_instance" "vm" {
     access_config {
     }
   }
-  metadata = {
-    ssh-keys = "${split("@", data.google_client_openid_userinfo.me.email)[0]}:${file("~/.ssh/id_rsa.pub")}"
-  }
 
   service_account {    
     # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.    
