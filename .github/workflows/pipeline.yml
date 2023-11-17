@@ -50,11 +50,6 @@ jobs:
         vuln-type: 'os,library'
         severity: 'CRITICAL'
   
-  deploy:
-
-    runs-on: ubuntu-latest
- 
-    steps:
     - name: Check environment
       id: check
       run: |
@@ -69,21 +64,21 @@ jobs:
           exit 1
         fi
     
-      if: ${{ steps.check.outputs.env }} = "dev"
+    if: ${{ steps.check.outputs.env }} = "dev"
       - name: Deploy to ${{ steps.check.outputs.env }}
         uses: hashicorp/terraform-github-actions@master
         with: 
           tf_actions_version: 0.14.8
           tf_actions_subcommand: 'init'
           tf_actions_working_dir: './terraform/environments/dev'
-      elif: ${{ steps.check.outputs.env }} = "test"
+    elif: ${{ steps.check.outputs.env }} = "test"
       - name: Deploy to ${{ steps.check.outputs.env }}
         uses: hashicorp/terraform-github-actions@master
         with: 
           tf_actions_version: 0.14.8
           tf_actions_subcommand: 'init'
           tf_actions_working_dir: './terraform/environments/test'
-      elif: ${{ steps.check.outputs.env }} = "prod"
+    elif: ${{ steps.check.outputs.env }} = "prod"
       - name: Deploy to ${{ steps.check.outputs.env }}
         uses: hashicorp/terraform-github-actions@master
         with: 
