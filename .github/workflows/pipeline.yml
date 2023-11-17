@@ -16,6 +16,10 @@ on:
       environment:
         type: environment
         required: true
+        options:
+          - dev
+          - test
+          - prod
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
