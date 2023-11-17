@@ -57,11 +57,11 @@ jobs:
     - name: Check environment
       id: check
       run: |
-        if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
+        if [ "${{ github.event.inputs.environment.options }}" == "dev" ]; then
           echo "::set-output name=env::dev"
-        elif [ "${{ github.event.inputs.environment }}" == "test" ]; then   
+        elif [ "${{ github.event.inputs.environment.options }}" == "test" ]; then   
           echo "::set-output name=env::test"  
-        elif [ "${{ github.event.inputs.environment }}" == "prod" ]; then
+        elif [ "${{ github.event.inputs.environment.options }}" == "prod" ]; then
           echo "::set-output name=env::prod"
         else
           echo "Invalid environment"
