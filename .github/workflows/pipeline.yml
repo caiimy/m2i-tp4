@@ -48,9 +48,48 @@ jobs:
   
   deploy:
 
-    if dev alors terraform apply tfvars dev
-      deployer GCP VM DEV
-    if test alors terraform apply tfvars test
-      deployer GCP VM TEST
-    if prof alors terraform apply tfvars prod
-      deployer cluster kub
+    runs-on: ubuntu-latest
+ 
+    steps:
+    - name: Check environment
+      id: check
+      run: |
+        if [ "${{ github.event.inputs.environment }}" = "dev" ]; then
+          echo "::set-output name=env::dev"
+        elif [ "${{ github.event.inputs.environment }}" = "test" ]; then   
+          echo "::set-output name=env::test"  
+        elif [ "${{ github.event.inputs.environment }}" = "prod" ]; then
+          echo "::set-output name=env::prod"
+        else
+          echo "Invalid environment"
+          exit 1
+        fi
+    
+    if: ${{ steps.check.outputs.env }} = "dev"
+    - name: Deploy to ${{ steps.check.outputs.env }}
+      uses: hashicorp/terraform-github-actions@master
+      with: 
+        tf_actions_version: 0.14.8
+        tf_actions_subcommand: 'init'
+        tf_actions_working_dir: './terraform/environments/dev'
+    elif: ${{ steps.check.outputs.env }} = "test"
+    - name: Deploy to ${{ steps.check.outputs.env }}
+      uses: hashicorp/terraform-github-actions@master
+      with: 
+        tf_actions_version: 0.14.8
+        tf_actions_subcommand: 'init'
+        tf_actions_working_dir: './terraform/environments/test'
+    elif: ${{ steps.check.outputs.env }} = "prod"
+    - name: Deploy to ${{ steps.check.outputs.env }}
+      uses: hashicorp/terraform-github-actions@master
+      with: 
+        tf_actions_version: 0.14.8
+        tf_actions_subcommand: 'init'
+        tf_actions_working_dir: './terraform/environments/prod'
+
+    # if dev alors terraform apply tfvars dev
+    #   deployer GCP VM DEV
+    # if test alors terraform apply tfvars test
+    #   deployer GCP VM TEST
+    # if prof alors terraform apply tfvars prod
+    #   deployer cluster kub
