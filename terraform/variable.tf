@@ -4,7 +4,7 @@ variable "env" {
 }
 
 # Kubernetes cluster prod name
-variable "cluster_name {
+variable "cluster_name" {
     type = string
 }
 
