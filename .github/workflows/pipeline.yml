@@ -60,6 +60,8 @@ jobs:
           echo "Deployment in dev"
           cd ./terraform/environments/dev
           terraform init 
+          echo " ------------------ LS ------------"
+          ls ../../../
           echo " ---------------- PLAN ------------------"
           terraform plan -var-file=terraform.tfvars
           echo " ---------------- APPLY ------------------"
