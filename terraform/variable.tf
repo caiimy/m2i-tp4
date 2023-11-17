@@ -1,21 +1,15 @@
 # Account Environment
-variable "env"{
-    type = string
-}
+variable "env"{type = string}
 
 # Kubernetes cluster prod name
-variable "cluster_name{
-    type = string
-}
+variable "cluster_name{type = string}
 
 variable "gcp_user"{
     type = string
     default = "admin"
 }
 
-variable "region"{
-    type = string
-}
+variable "region"{type = string}
 
 variable "zone"{
     type = string
