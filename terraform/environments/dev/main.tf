@@ -1,18 +1,18 @@
 provider "google" {
   project     = var.project_name
   region      = var.region
-  credentials  = "../../../credentials.json"
+  credentials  = file(var.credentials_file)
 }
 
 data "google_client_openid_userinfo" "me" {
 }
 
 resource "google_compute_network" "vpc_network" {
-  name = "${var.env}-vpc-network"
+  name = "${var.project_name}-${var.env}-vpc-network"
 }
 
 resource "google_compute_subnetwork" "subnet" {  
-  name          = "${var.env}-subnet"  
+  name          = "${var.project_name}-${var.env}-subnet"  
   ip_cidr_range = "10.0.0.0/24"  
   network       = google_compute_network.vpc_network.self_link
 }
@@ -34,8 +34,8 @@ resource "google_service_account" "service_account" {
 }
 
 # Instance pour la machine virtuelle de dev
-resource "google_compute_instance" "wp" {  
-  name         = "${var.project_name}-${var.env}-vitual-machine"  
+resource "google_compute_instance" "vm" {  
+  name         = "${var.project_name}-${var.env}-virtual-machine"  
   machine_type = "e2-small"  
   zone         = "${var.region}-${var.zone}"
   tags         = ["wp"]
