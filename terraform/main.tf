@@ -8,18 +8,18 @@ data "google_client_openid_userinfo" "me" {
 }
 
 resource "google_compute_network" "vpc_network" {
-  name = "vpc-network"
+  name = "${var.env}-vpc-network"
 }
 
 resource "google_compute_subnetwork" "subnet" {  
-  name          = "subnet-wp"  
+  name          = "${var.env}-subnet-wp"  
   ip_cidr_range = "10.0.0.0/24"  
   network       = google_compute_network.vpc_network.self_link
 }
 
 resource "google_compute_firewall" "fw" {
   project     = var.project_name
-  name    = "${var.project_name}-firewall"
+  name    = "${var.project_name}-${var.env}-firewall"
   network = google_compute_network.vpc_network.self_link
   source_ranges = ["0.0.0.0/0"]
   allow {
@@ -35,7 +35,7 @@ resource "google_service_account" "service_account" {
 
 # Instance pour Wordpress
 resource "google_compute_instance" "wp" {  
-  name         = "wordpress-${var.project_name}"  
+  name         = "wordpress-${var.project_name}-${var.env}"  
   machine_type = "e2-small"  
   zone         = "${var.region}-${var.zone}"
   tags         = ["wp"]
@@ -69,7 +69,7 @@ resource "google_compute_address" "wp_ip" {
 
 # Instance pour la base de données
 resource "google_compute_instance" "db" {  
-  name         = "db-${var.project_name}"   
+  name         = "db-${var.project_name}-${var.env}"   
   machine_type = "e2-small"  
   zone         = "${var.region}-${var.zone}"  
   tags         = ["db"]
