@@ -74,8 +74,8 @@ jobs:
       with: 
         tf_actions_version: 0.14.8
         tf_actions_subcommand: 'init'
-        tf_actions_working_dir: './terraform'
-        args: '-var-file="./environments/dev/terraform.tfvars"'
+        tf_actions_working_dir: './terraform/environments/dev'
+        args: '-var-file="terraform.tfvars"'
       
     - if: ${{ steps.check.outputs.env }} == "test"
       name: Deploy to test
@@ -83,8 +83,8 @@ jobs:
       with: 
         tf_actions_version: 0.14.8
         tf_actions_subcommand: 'init'
-        tf_actions_working_dir: './terraform'
-        args: '-var-file="./environments/test/terraform.tfvars"'
+        tf_actions_working_dir: './terraform/environments/test'
+        args: '-var-file="terraform.tfvars"'
 
     - if: ${{ steps.check.outputs.env }} == "prod"
       name: Deploy to prod
@@ -92,5 +92,5 @@ jobs:
       with: 
         tf_actions_version: 0.14.8
         tf_actions_subcommand: 'init'
-        tf_actions_working_dir: './terraform'
-        args: '-var-file="./environments/prod/terraform.tfvars"'
+        tf_actions_working_dir: './terraform/environments/prod'
+        args: '-var-file="terraform.tfvars"'
