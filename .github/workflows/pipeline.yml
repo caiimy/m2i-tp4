@@ -60,14 +60,19 @@ jobs:
           echo "Deployment in dev"
           cd ./terraform/environments/dev
           terraform init 
+          terraform apply -var-file="terraform.tfvars"
+          sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+          sudo docker run hello-world
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then   
           echo "eployment in test"
           cd ./terraform/environments/test
           terraform init   
+          terraform apply -var-file="terraform.tfvars"
         elif [ "${{ github.event.inputs.environment }}" == "prod" ]; then
           echo "eployment in prod"
           cd ./terraform/environments/prod
           terraform init 
+          terraform apply -var-file="terraform.tfvars"
         fi
     
     # - if: ${{ github.event.inputs.environment }} == "dev"
