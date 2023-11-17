@@ -54,21 +54,21 @@ jobs:
         vuln-type: 'os,library'
         severity: 'CRITICAL'
   
-    - name: Check environment
-      id: check
-      run: |
-        if [ "${{ github.event.inputs.environment.options }}" == "dev" ]; then
-          echo "::set-output name=env::dev"
-        elif [ "${{ github.event.inputs.environment.options }}" == "test" ]; then   
-          echo "::set-output name=env::test"  
-        elif [ "${{ github.event.inputs.environment.options }}" == "prod" ]; then
-          echo "::set-output name=env::prod"
-        else
-          echo "Invalid environment"
-          exit 1
-        fi
+    # - name: Check environment
+    #   id: check
+    #   run: |
+    #     if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
+    #       echo "::set-output name=env::dev"
+    #     elif [ "${{ github.event.inputs.environment }}" == "test" ]; then   
+    #       echo "::set-output name=env::test"  
+    #     elif [ "${{ github.event.inputs.environment }}" == "prod" ]; then
+    #       echo "::set-output name=env::prod"
+    #     else
+    #       echo "Invalid environment"
+    #       exit 1
+    #     fi
     
-    - if: ${{ steps.check.outputs.env }} == "dev"
+    - if: ${{ github.event.inputs.environment }} == "dev"
       name: Deploy to dev
       uses: hashicorp/terraform-github-actions@master
       with: 
@@ -77,7 +77,7 @@ jobs:
         tf_actions_working_dir: './terraform/environments/dev'
         args: '-var-file="terraform.tfvars"'
       
-    - if: ${{ steps.check.outputs.env }} == "test"
+    - if: ${{ github.event.inputs.environment }} == "test"
       name: Deploy to test
       uses: hashicorp/terraform-github-actions@master
       with: 
@@ -86,7 +86,7 @@ jobs:
         tf_actions_working_dir: './terraform/environments/test'
         args: '-var-file="terraform.tfvars"'
 
-    - if: ${{ steps.check.outputs.env }} == "prod"
+    - if: ${{ github.event.inputs.environment }} == "prod"
       name: Deploy to prod
       uses: hashicorp/terraform-github-actions@master
       with: 
