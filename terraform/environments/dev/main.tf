@@ -6,8 +6,8 @@ provider "google" {
 
 terraform {
   backend "gcs" {
-    bucket  = "${var.project_name}-${var.env}-bucket-tfstate"
-    prefix  = ""
+    bucket  = "bucket-tfstate"
+    prefix  = "${var.env}"
   }
 }
 
