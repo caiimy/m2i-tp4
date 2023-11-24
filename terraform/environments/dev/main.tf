@@ -28,6 +28,12 @@ resource "google_compute_firewall" "fw" {
   }
 }
 
+resource "google_storage_bucket_object" "backend_folder" {
+  name   = "terraform_backend/" # folder name should end with '/'
+  content = " "            # content is ignored but should be non-empty
+  bucket = "backend"
+}
+
 resource "google_service_account" "service_account" {
   account_id   = "service-account-id"
   display_name = "Service Account"
