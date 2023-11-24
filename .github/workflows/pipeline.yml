@@ -53,57 +53,52 @@ jobs:
     #     ignore-unfixed: true
     #     vuln-type: 'os,library'
     #     severity: 'CRITICAL'
-  
-    - name: deploy terraform 
+
+    - name: Generate SSH key
+      id: generate_key
+      run: |
+        ssh-keygen -q -N "" -f id_rsa <<<y >/dev/null 2>&1
+        PRIVATE_KEY=$(cat id_rsa)
+        PUBLIC_KEY=$(cat id_rsa.pub)        
+        echo ::set-output name=private_key::${PRIVATE_KEY}
+        echo ::set-output name=public_key::${PUBLIC_KEY}
+
+    - name: Store SSH private key
+      run: |        
+        echo "${{ steps.generate_key.outputs.private_key }}" > id_rsa
+        chmod 600 id_rsa
+
+    - name: configure terraform 
       run: |
         if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
           echo "Deployment in dev"
           cd ./terraform/environments/dev
           terraform init 
-          echo " ------------------ LS ------------"
-          ls ../../../
-          echo " ---------------- PLAN ------------------"
-          terraform plan -var-file=terraform.tfvars
-          echo " ---------------- APPLY ------------------"
+          # echo " ------------------ LS ------------"
+          # ls ../../../
+          # echo " ---------------- PLAN ------------------"
+          # terraform plan -var-file=terraform.tfvars
+          # echo " ---------------- APPLY ------------------"
           # terraform apply 
           # terraform destroy
           #sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
           #sudo docker run hello-world
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then   
-          echo "eployment in test"
+          echo "Deployment in test"
           cd ./terraform/environments/test
           terraform init   
           terraform apply -var-file="terraform.tfvars"
         elif [ "${{ github.event.inputs.environment }}" == "prod" ]; then
-          echo "eployment in prod"
+          echo "Deployment in prod"
           cd ./terraform/environments/prod
           terraform init 
           terraform apply -var-file="terraform.tfvars"
         fi
-    
-    # - if: ${{ github.event.inputs.environment }} == "dev"
-    #   name: Deploy to dev
-    #   uses: hashicorp/terraform-github-actions@master
-    #   with: 
-    #     tf_actions_version: 0.14.8
-    #     tf_actions_subcommand: 'init'
-    #     tf_actions_working_dir: './terraform/environments/dev'
-    #     args: '-var-file="terraform.tfvars"'
-      
-    # - if: ${{ github.event.inputs.environment }} == "test"
-    #   name: Deploy to test
-    #   uses: hashicorp/terraform-github-actions@master
-    #   with: 
-    #     tf_actions_version: 0.14.8
-    #     tf_actions_subcommand: 'init'
-    #     tf_actions_working_dir: './terraform/environments/test'
-    #     args: '-var-file="terraform.tfvars"'
 
-    # - if: ${{ github.event.inputs.environment }} == "prod"
-    #   name: Deploy to prod
-    #   uses: hashicorp/terraform-github-actions@master
-    #   with: 
-    #     tf_actions_version: 0.14.8
-    #     tf_actions_subcommand: 'init'
-    #     tf_actions_working_dir: './terraform/environments/prod'
-    #     args: '-var-file="terraform.tfvars"'
+    - name: Configure Terraform SSH key 
+      run: |        
+        terraform import tls_private_key.github_actions_key "${{ steps.generate_key.outputs.public_key }}"
+    
+    - name: Plan terraform
+      run: |
+        terraform plan

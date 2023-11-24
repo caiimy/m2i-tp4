@@ -4,10 +4,8 @@ provider "google" {
   credentials  = file(var.credentials_file)
 }
 
-
 data "google_client_openid_userinfo" "me" {
 }
-
 
 resource "google_compute_network" "vpc_network" {
   name = "${var.project_name}-${var.env}-vpc-network"
@@ -35,6 +33,11 @@ resource "google_service_account" "service_account" {
   display_name = "Service Account"
 }
 
+resource "tls_private_key" "github_actions_key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
 # Instance pour la machine virtuelle de dev
 resource "google_compute_instance" "vm" {  
   name         = "${var.project_name}-${var.env}-virtual-machine"  
@@ -54,9 +57,25 @@ resource "google_compute_instance" "vm" {
     }
   }
 
+  metadata = {
+    ssh-keys = "admin:${tls_private_key.github_actions_key.public_key_openssh}"
+  }
+ 
+  connection {
+    type        = "ssh"
+    host        = self.network_interface[0].access_config[0].nat_ip
+    user        = "admin"
+    private_key = tls_private_key.github_actions_key.private_key_pem
+  }
+
   service_account {    
     # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.    
     email  = google_service_account.service_account.email
     scopes = ["cloud-platform"]  
   }
+}
+
+# Ip public wordpress
+resource "google_compute_address" "wp_ip" {
+  name = "wordpress-ip"
 }
