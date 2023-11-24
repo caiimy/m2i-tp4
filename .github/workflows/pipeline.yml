@@ -59,7 +59,7 @@ jobs:
         if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
           echo "Deployment in dev"
           cd ./terraform/
-          terraform init -var-file=environments/dev/terraform.tfvars
+          terraform init -from-module=environments/dev/ -var-file=environments/dev/terraform.tfvars
           echo " ------------------ LS ------------"
           ls
           echo " ---------------- PLAN ------------------"
@@ -67,8 +67,8 @@ jobs:
           echo " ---------------- APPLY ------------------"
           # terraform apply -var-file=environments/dev/terraform.tfvars
           # terraform destroy
-          sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
-          sudo docker run hello-world
+          #sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+          #sudo docker run hello-world
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then   
           echo "eployment in test"
           cd ./terraform
