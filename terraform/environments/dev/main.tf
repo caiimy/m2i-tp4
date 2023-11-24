@@ -4,8 +4,6 @@ provider "google" {
   credentials  = file(var.credentials_file)
 }
 
-data "google_client_openid_userinfo" "me" {
-}
 
 resource "google_compute_network" "vpc_network" {
   name = "${var.project_name}-${var.env}-vpc-network"
