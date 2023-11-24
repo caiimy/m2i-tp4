@@ -98,9 +98,10 @@ jobs:
     - name: Configure Terraform SSH key 
       run: |        
         echo " ---------------- CD -------------------"
+        cd ./terraform/environments/dev
         ls
         terraform import tls_private_key.github_actions_key "${{ steps.generate_key.outputs.public_key }}"
     
     - name: Plan terraform
       run: |
-        terraform plan
+        terraform plan -var-file=terraform.tfvars
