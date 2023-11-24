@@ -58,52 +58,25 @@ jobs:
       run: |
         if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
           echo "Deployment in dev"
-          cd ./terraform/environments/dev
-          terraform init 
+          cd ./terraform/
+          terraform init -var-file=environments/dev/terraform.tfvars
           echo " ------------------ LS ------------"
-          ls ../../../
+          ls
           echo " ---------------- PLAN ------------------"
-          terraform plan -var-file=terraform.tfvars
+          terraform plan -var-file=environments/dev/terraform.tfvars
           echo " ---------------- APPLY ------------------"
-          # terraform apply 
+          # terraform apply -var-file=environments/dev/terraform.tfvars
           # terraform destroy
           sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
           sudo docker run hello-world
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then   
           echo "eployment in test"
-          cd ./terraform/environments/test
-          terraform init   
+          cd ./terraform
+          terraform init -var-file=environments/test/terraform.tfvars
           terraform apply -var-file="terraform.tfvars"
         elif [ "${{ github.event.inputs.environment }}" == "prod" ]; then
           echo "eployment in prod"
-          cd ./terraform/environments/prod
+          cd ./terraform
           terraform init 
-          terraform apply -var-file="terraform.tfvars"
+          terraform apply -var-file=environments/prod/terraform.tfvars
         fi
-    
-    # - if: ${{ github.event.inputs.environment }} == "dev"
-    #   name: Deploy to dev
-    #   uses: hashicorp/terraform-github-actions@master
-    #   with: 
-    #     tf_actions_version: 0.14.8
-    #     tf_actions_subcommand: 'init'
-    #     tf_actions_working_dir: './terraform/environments/dev'
-    #     args: '-var-file="terraform.tfvars"'
-      
-    # - if: ${{ github.event.inputs.environment }} == "test"
-    #   name: Deploy to test
-    #   uses: hashicorp/terraform-github-actions@master
-    #   with: 
-    #     tf_actions_version: 0.14.8
-    #     tf_actions_subcommand: 'init'
-    #     tf_actions_working_dir: './terraform/environments/test'
-    #     args: '-var-file="terraform.tfvars"'
-
-    # - if: ${{ github.event.inputs.environment }} == "prod"
-    #   name: Deploy to prod
-    #   uses: hashicorp/terraform-github-actions@master
-    #   with: 
-    #     tf_actions_version: 0.14.8
-    #     tf_actions_subcommand: 'init'
-    #     tf_actions_working_dir: './terraform/environments/prod'
-    #     args: '-var-file="terraform.tfvars"'
