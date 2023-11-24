@@ -5,10 +5,23 @@ provider "google" {
 }
 
 terraform {
-  backend "bucket" {}
+  backend "gcs" {
+    bucket  = "${var.project_name}-${var.env}-bucket-tfstate"
+    prefix  = ""
+  }
 }
 
 data "google_client_openid_userinfo" "me" {
+}
+
+resource "google_storage_bucket" "default" {
+  name          = "${var.project_name}-${var.env}-bucket-tfstate"
+  force_destroy = false
+  location      = "EU"
+  storage_class = "STANDARD"
+  versioning {
+    enabled = true
+  }
 }
 
 resource "google_compute_network" "vpc_network" {
