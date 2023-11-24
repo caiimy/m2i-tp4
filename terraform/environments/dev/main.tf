@@ -4,6 +4,10 @@ provider "google" {
   credentials  = file(var.credentials_file)
 }
 
+terraform {
+  backend "bucket" {}
+}
+
 data "google_client_openid_userinfo" "me" {
 }
 
@@ -26,12 +30,6 @@ resource "google_compute_firewall" "fw" {
     protocol = "tcp"
     ports    = ["22", "80", "443"]
   }
-}
-
-resource "google_storage_bucket_object" "backend_folder" {
-  name   = "terraform_backend/" # folder name should end with '/'
-  content = " "            # content is ignored but should be non-empty
-  bucket = "backend"
 }
 
 resource "google_service_account" "service_account" {
