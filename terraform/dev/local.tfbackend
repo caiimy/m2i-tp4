@@ -1,3 +1,0 @@
-region = "europe_west1"
-bucket = "terraform_backend"
-key = "terraform/environments/dev/env-dev.tfstate"

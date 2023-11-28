@@ -72,7 +72,7 @@ jobs:
       run: |
         if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
           echo "Deployment in dev"
-          terraform -chdir=./terraform/dev init -var-file=terraform.tfvars
+          terraform -chdir=./terraform/dev init -backend-config=bucket.tfbackend -var-file=terraform.tfvars
           terraform -chdir=./terraform/dev plan -var-file=terraform.tfvars
           terraform -chdir=./terraform/dev apply -var-file=terraform.tfvars
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then   

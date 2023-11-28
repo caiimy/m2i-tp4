@@ -6,8 +6,6 @@ provider "google" {
 
 terraform {
  backend "gcs" {
-   bucket  = "${var.project_name}-${var.env}-bucket-tfstate"
-   prefix  = "terraform/state"
  }
 }
 
@@ -72,7 +70,7 @@ resource "google_compute_instance" "vm" {
 }
 
 resource "google_storage_bucket" "bucket-tfstate" {
-  name          = "${var.project_name}-${var.env}-bucket-tfstate"
+  name          = "${var.project_name}-${var.env}-bucket-backend"
   force_destroy = false
   location      = "EU"
   storage_class = "STANDARD"

@@ -1,0 +1,3 @@
+region = "europe_west1"
+bucket = "${var.project_name}-${var.env}-bucket-tfstate"
+key = "terraform/dev/env-dev.tfstate"
