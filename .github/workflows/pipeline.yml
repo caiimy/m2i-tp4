@@ -94,5 +94,5 @@ jobs:
     
     - name: Plan terraform
       run: |
-        cd
+        ls
         terraform -chdir=./terraform/dev plan -var-file=terraform.tfvars
