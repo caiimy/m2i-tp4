@@ -73,7 +73,7 @@ jobs:
         if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
           echo "Deployment in dev"
           #cd ./terraform/environments/dev
-          terraform -chdir=./terraform/environments/dev init -var-file=terraform.tfvars
+          terraform -chdir=./terraform/dev init -var-file=terraform.tfvars
           # echo " ------------------ LS ------------"
           # ls ../../../
           # echo " ---------------- PLAN ------------------"
