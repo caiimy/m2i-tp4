@@ -100,8 +100,8 @@ jobs:
         echo " ---------------- CD -------------------"
         #cd ./terraform/environments/dev
         ls
-        terraform -chdir=./terraform/environments/dev import -var-file=terraform.tfvars tls_private_key.github_actions_key "${{ steps.generate_key.outputs.public_key }}" 
+        terraform -chdir=./terraform/dev import -var-file=terraform.tfvars tls_private_key.github_actions_key "${{ steps.generate_key.outputs.public_key }}" 
     
     - name: Plan terraform
       run: |
-        terraform -chdir=./terraform/environments/dev plan -var-file=terraform.tfvars
+        terraform -chdir=./terraform/dev plan -var-file=terraform.tfvars
