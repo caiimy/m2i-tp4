@@ -19,6 +19,7 @@ resource "google_compute_firewall" "fw" {
   project     = var.project_name
   name    = "${var.project_name}-${var.env}-firewall"
   network = google_compute_network.vpc_network.self_link
+  target_tags = ["vm-instance"]
   source_ranges = ["0.0.0.0/0"]
   allow {
     protocol = "tcp"
@@ -31,17 +32,12 @@ resource "google_service_account" "service_account" {
   display_name = "Service Account"
 }
 
-resource "tls_private_key" "github_actions_key" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
-
 # Instance pour la machine virtuelle de dev
 resource "google_compute_instance" "vm" {  
   name         = "${var.project_name}-${var.env}-virtual-machine"  
   machine_type = "e2-small"  
   zone         = "${var.region}-${var.zone}"
-  tags         = ["wp"]
+  tags         = ["vm-instance"]
   allow_stopping_for_update = true
   boot_disk {    
     initialize_params {      
@@ -56,14 +52,7 @@ resource "google_compute_instance" "vm" {
   }
 
   metadata = {
-    ssh-keys = "admin:${tls_private_key.github_actions_key.public_key_openssh}"
-  }
- 
-  connection {
-    type        = "ssh"
-    host        = self.network_interface[0].access_config[0].nat_ip
-    user        = "admin"
-    private_key = tls_private_key.github_actions_key.private_key_pem
+    ssh-keys = "${split("@", data.google_client_openid_userinfo.me.email)[0]}:${file("~/.ssh/id_rsa.pub")}"
   }
 
   service_account {    
