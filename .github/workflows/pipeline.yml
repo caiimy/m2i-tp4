@@ -72,8 +72,8 @@ jobs:
       run: |
         if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
           echo "Deployment in dev"
-          cd ./terraform/environments/dev
-          terraform init 
+          #cd ./terraform/environments/dev
+          terraform -chdir=./terraform/environments/dev init -var-file=terraform.tfvars
           # echo " ------------------ LS ------------"
           # ls ../../../
           # echo " ---------------- PLAN ------------------"
@@ -85,8 +85,8 @@ jobs:
           #sudo docker run hello-world
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then   
           echo "Deployment in test"
-          cd ./terraform/environments/test
-          terraform init   
+          #cd ./terraform/environments/test
+          terraform -chdir=./terraform/environments/dev init -var-file=terraform.tfvars   
           terraform apply -var-file="terraform.tfvars"
         elif [ "${{ github.event.inputs.environment }}" == "prod" ]; then
           echo "Deployment in prod"
@@ -98,10 +98,10 @@ jobs:
     - name: Configure Terraform SSH key 
       run: |        
         echo " ---------------- CD -------------------"
-        cd ./terraform/environments/dev
+        #cd ./terraform/environments/dev
         ls
-        terraform import tls_private_key.github_actions_key "${{ steps.generate_key.outputs.public_key }}"
+        terraform -chdir=./terraform/environments/dev import -var-file=terraform.tfvars tls_private_key.github_actions_key "${{ steps.generate_key.outputs.public_key }}" 
     
     - name: Plan terraform
       run: |
-        terraform plan -var-file=terraform.tfvars
+        terraform -chdir=./terraform/environments/dev plan -var-file=terraform.tfvars
