@@ -1,1 +1,1 @@
-bucket = "${var.project_name}-${var.env}-bucket-backend"
+bucket = "m2i-tp4-dev-bucket-backend"
