@@ -4,6 +4,13 @@ provider "google" {
   credentials  = file(var.credentials_file)
 }
 
+terraform {
+ backend "gcs" {
+   bucket  = "${var.project_name}-${var.env}-bucket-tfstate"
+   prefix  = "terraform/state"
+ }
+}
+
 data "google_client_openid_userinfo" "me" {
 }
 
@@ -62,6 +69,22 @@ resource "google_compute_instance" "vm" {
     email  = google_service_account.service_account.email
     scopes = ["cloud-platform"]  
   }
+}
+
+resource "google_storage_bucket" "bucket-tfstate" {
+  name          = "${var.project_name}-${var.env}-bucket-tfstate"
+  force_destroy = false
+  location      = "EU"
+  storage_class = "STANDARD"
+  versioning {
+    enabled = true
+  }
+  encryption {
+    default_kms_key_name = google_kms_crypto_key.terraform_state_bucket.id
+  }
+  depends_on = [
+    google_project_iam_member.default
+  ]
 }
 
 # Ip public wordpress

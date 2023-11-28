@@ -73,6 +73,8 @@ jobs:
         if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
           echo "Deployment in dev"
           terraform -chdir=./terraform/dev init -var-file=terraform.tfvars
+          terraform -chdir=./terraform/dev plan -var-file=terraform.tfvars
+          terraform -chdir=./terraform/dev apply -var-file=terraform.tfvars
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then   
           echo "Deployment in test"
           #cd ./terraform/environments/test
@@ -84,15 +86,3 @@ jobs:
           terraform init 
           terraform apply -var-file="terraform.tfvars"
         fi
-
-    # - name: Configure Terraform SSH key 
-    #   run: |        
-    #     echo " ---------------- CD -------------------"
-    #     #cd ./terraform/environments/dev
-    #     ls
-    #     terraform -chdir=./terraform/dev import -var-file=terraform.tfvars tls_private_key.github_actions_key "${{ steps.generate_key.outputs.public_key }}" 
-    
-    - name: Plan terraform
-      run: |
-        ls
-        terraform -chdir=./terraform/dev plan -var-file=terraform.tfvars
