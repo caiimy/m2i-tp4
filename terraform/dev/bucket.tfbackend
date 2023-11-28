@@ -1,1 +1,2 @@
 bucket = "m2i-tp4-dev-bucket-backend"
+credentials  = file(var.credentials_file)
