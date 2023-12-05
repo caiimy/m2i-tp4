@@ -2,7 +2,7 @@
 env = "dev"
 
 # Account region
-region = "europe_west1"
+region = "europe-west1"
 
 #Account zone
 zone = "c"
