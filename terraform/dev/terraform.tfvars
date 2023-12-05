@@ -7,6 +7,9 @@ region = "europe-west1"
 #Account zone
 zone = "c"
 
+# Project name id
+project_name_id = "m2i-tp4-31"
+
 # Project name
 project_name = "m2i-tp4"
 

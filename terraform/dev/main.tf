@@ -1,5 +1,5 @@
 provider "google" {
-  project     = var.project_name
+  project     = var.project_name_id
   region      = var.region
   credentials  = file(var.credentials_file)
 }
@@ -8,7 +8,7 @@ data "google_client_openid_userinfo" "me" {
 }
 
 resource "google_project_service" "project" {
-  project = "${var.project_name}"
+  project = "${var.project_name_id}"
   service = "iam.googleapis.com"
 
   disable_dependent_services = true
@@ -25,7 +25,7 @@ resource "google_compute_subnetwork" "subnet" {
 }
 
 resource "google_compute_firewall" "fw" {
-  project     = var.project_name
+  project     = var.project_name_id
   name    = "${var.project_name}-${var.env}-firewall"
   network = google_compute_network.vpc_network.self_link
   target_tags = ["vm-instance"]
