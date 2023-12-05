@@ -75,6 +75,7 @@ jobs:
           terraform -chdir=./terraform/dev init -var-file=terraform.tfvars
           terraform -chdir=./terraform/dev plan -var-file=terraform.tfvars
           terraform -chdir=./terraform/dev apply -var-file=terraform.tfvars
+          ls -la ./dev
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then   
           echo "Deployment in test"
           #cd ./terraform/environments/test
