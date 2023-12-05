@@ -72,6 +72,6 @@ resource "google_compute_instance" "vm" {
 }
 
 # Ip public wordpress
-resource "google_compute_address" "wp_ip" {
-  name = "wordpress-ip"
+resource "google_compute_address" "vm_ip" {
+  name = "${var.project_name}-${var.env}-virtual-ip"
 }
