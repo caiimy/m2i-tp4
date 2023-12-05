@@ -6,7 +6,7 @@ provider "google" {
 
 terraform {
  backend "gcs" {
-  GOOGLE_BACKEND_CREDENTIALS = file(var.credentials_file)
+  
  }
 }
 
