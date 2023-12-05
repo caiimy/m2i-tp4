@@ -36,10 +36,10 @@ resource "google_compute_firewall" "fw" {
   }
 }
 
-resource "google_service_account" "service_account" {
-  account_id   = "service-account-id"
-  display_name = "Service Account"
-}
+# resource "google_service_account" "service_account" {
+#  account_id   = "service-account-id"
+#  display_name = "Service Account"
+#}
 
 # Instance pour la machine virtuelle de dev
 resource "google_compute_instance" "vm" {  
