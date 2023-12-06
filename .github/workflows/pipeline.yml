@@ -90,7 +90,7 @@ jobs:
     - name: connect to the VM with ssh
       run: |
         if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
-          IP_VM_INT=$(terraform output vm_intern_ip)
-          USER=${split("@", data.google_client_openid_userinfo.me.email)[0]}
+          export IP_VM_INT=$(terraform output vm_intern_ip)
+          export USER=${split("@", data.google_client_openid_userinfo.me.email)[0]}
           echo "$IP_VM_INT"
           echo "$USER"
