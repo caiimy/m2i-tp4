@@ -91,4 +91,4 @@ jobs:
       run: |
         if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
           IP_VM_INT=$(terraform output vm_intern_ip)
-          echo "ssh "${split("@", data.google_client_openid_userinfo.me.email)[0]}"@"$IP_VM_INT""
+          echo "ssh ${split("@", data.google_client_openid_userinfo.me.email)[0]}@$IP_VM_INT
