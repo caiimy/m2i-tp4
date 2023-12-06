@@ -1,9 +1,5 @@
-output "wp_intern_ip" {
-  value = google_compute_instance.wp.network_interface[0].network_ip
-}
-
-output "wp_extern_ip" {
-  value = google_compute_instance.wp.network_interface[0].access_config[0].nat_ip
+output "vm_intern_ip" {
+  value = google_compute_instance.vm.network_interface[0].network_ip
 }
 
 output "vm_ip" {

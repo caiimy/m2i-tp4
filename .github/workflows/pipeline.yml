@@ -72,10 +72,9 @@ jobs:
       run: |
         if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
           echo "Deployment in dev"
-          terraform -chdir=./terraform/dev init -var-file=terraform.tfvars
-          terraform -chdir=./terraform/dev plan -var-file=terraform.tfvars
-          terraform -chdir=./terraform/dev apply -var-file=terraform.tfvars -auto-approve
-          ls -la ./dev
+          #terraform -chdir=./terraform/dev init -var-file=terraform.tfvars
+          #terraform -chdir=./terraform/dev plan -var-file=terraform.tfvars
+          #terraform -chdir=./terraform/dev apply -var-file=terraform.tfvars -auto-approve
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then   
           echo "Deployment in test"
           #cd ./terraform/environments/test
@@ -87,3 +86,9 @@ jobs:
           terraform init 
           terraform apply -var-file="terraform.tfvars"
         fi
+
+    - name: connect to the VM with ssh
+      run: |
+        if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
+          IP_VM_INT=$(terraform output vm_intern_ip)
+          echo "ssh "${split("@", data.google_client_openid_userinfo.me.email)[0]"@"$IP_VM_INT""
