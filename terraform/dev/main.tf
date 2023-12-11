@@ -78,8 +78,3 @@ resource "google_compute_instance" "vm" {
     scopes = ["cloud-platform"]  
   }
 }
-
-# Ip public wordpress
-resource "google_compute_address" "vm_ip" {
-  name = "${var.project_name}-${var.env}-virtual-ip"
-}
