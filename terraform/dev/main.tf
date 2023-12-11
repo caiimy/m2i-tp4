@@ -7,6 +7,13 @@ provider "google" {
 data "google_client_openid_userinfo" "me" {
 }
 
+resource "google_storage_bucket" "bucket_tfstate" {
+  name          = "${var.project_name}-${var.env}-bucket" 
+  location      = "EU"
+
+  force_destroy = true
+}
+
 resource "google_project_service" "project" {
   project = "${var.project_name_id}"
   service = "iam.googleapis.com"
@@ -61,7 +68,8 @@ resource "google_compute_instance" "vm" {
   }
 
   metadata = {
-    ssh-keys = "${split("@", data.google_client_openid_userinfo.me.email)[0]}:${file("../../id_rsa.pub")}"
+    #ssh-keys = "${split("@", data.google_client_openid_userinfo.me.email)[0]}:${file("../../id_rsa.pub")}"
+    ssh-keys = "${split("@", data.google_client_openid_userinfo.me.email)[0]}:${file("~/.ssh/id_rsa.pub")}"
   }
 
   service_account {    

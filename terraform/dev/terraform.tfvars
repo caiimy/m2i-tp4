@@ -14,4 +14,4 @@ project_name_id = "m2i-tp4-31"
 project_name = "m2i-tp4"
 
 # Path to credential file
-credentials_file = "./credentials.json"
+credentials_file = "../../credentials.json"
