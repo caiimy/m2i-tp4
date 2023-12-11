@@ -7,12 +7,12 @@ provider "google" {
 data "google_client_openid_userinfo" "me" {
 }
 
-resource "google_storage_bucket" "bucket_tfstate" {
-  name          = "${var.project_name}-${var.env}-bucket" 
-  location      = "EU"
-
-  force_destroy = true
-}
+#resource "google_storage_bucket" "bucket_tfstate" {
+#  name          = "${var.project_name}-${var.env}-bucket" 
+#  location      = "EU"
+#
+#  force_destroy = true
+#}
 
 resource "google_project_service" "project" {
   project = "${var.project_name_id}"
