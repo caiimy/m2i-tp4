@@ -4,13 +4,6 @@ provider "google" {
   credentials  = file(var.credentials_file)
 }
 
-terraform {
- backend "gcs" {
-   bucket  = "m2i-tp4-dev-bucket"
-   prefix  = "terraform/state"
- }
-}
-
 data "google_client_openid_userinfo" "me" {
 }
 
