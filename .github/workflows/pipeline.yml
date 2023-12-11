@@ -91,6 +91,4 @@ jobs:
       run: |
         if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
           export IP_VM_INT=$(terraform -chdir=./terraform/dev output vm_intern_ip)
-          export USER=${split("@", data.google_client_openid_userinfo.me.email)[0]}
           echo "$IP_VM_INT"
-          echo "$USER"
