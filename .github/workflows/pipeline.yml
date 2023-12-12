@@ -75,16 +75,17 @@ jobs:
           terraform -chdir=./terraform/dev init -var-file=terraform.tfvars
           terraform -chdir=./terraform/dev plan -var-file=terraform.tfvars
           terraform -chdir=./terraform/dev apply -var-file=terraform.tfvars -auto-approve
+          gsutil cp ./terraform/dev/terraform.tfstate gs://m2i-tp4-dev-bucket
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then   
           echo "Deployment in test"
-          #cd ./terraform/environments/test
-          terraform -chdir=./terraform/environments/dev init -var-file=terraform.tfvars   
-          terraform apply -var-file="terraform.tfvars"
+          terraform -chdir=./terraform/testv init -var-file=terraform.tfvars
+          terraform -chdir=./terraform/test plan -var-file=terraform.tfvars
+          terraform -chdir=./terraform/test apply -var-file=terraform.tfvars -auto-approve
         elif [ "${{ github.event.inputs.environment }}" == "prod" ]; then
           echo "Deployment in prod"
-          cd ./terraform/environments/prod
-          terraform init 
-          terraform apply -var-file="terraform.tfvars"
+          terraform -chdir=./terraform/prod init -var-file=terraform.tfvars
+          terraform -chdir=./terraform/prod plan -var-file=terraform.tfvars
+          terraform -chdir=./terraform/prod apply -var-file=terraform.tfvars -auto-approve
         fi
 
     - name: connect to the VM with ssh
@@ -92,3 +93,8 @@ jobs:
         if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
           export IP_VM_INT=$(terraform -chdir=./terraform/dev output vm_intern_ip)
           echo "$IP_VM_INT"
+          ssh user@$IP_VM_INT
+        elif [ "${{ github.event.inputs.environment }}" == "test" ]; then 
+          export IP_VM_INT=$(terraform -chdir=./terraform/dev output vm_intern_ip)
+          echo "$IP_VM_INT"
+          ssh user@$IP_VM_INT
