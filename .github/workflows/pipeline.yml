@@ -68,11 +68,17 @@ jobs:
         echo "${{ steps.generate_key.outputs.private_key }}" > id_rsa
         chmod 600 id_rsa
 
+    - name: destroy terraform 
+      run: |
+        if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
+          terraform -chdir=./terraform/dev init -var-file=terraform.tfvars 
+          terraform -chdir=./terraform/dev destroy -var-file=terraform.tfvars 
+        fi
+
     - name: configure terraform 
       run: |
         if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
           echo "Deployment in dev"
-          terraform -chdir=./terraform/dev destroy -var-file=terraform.tfvars
           terraform -chdir=./terraform/dev init -var-file=terraform.tfvars 
           terraform -chdir=./terraform/dev plan -var-file=terraform.tfvars
           terraform -chdir=./terraform/dev apply -var-file=terraform.tfvars -auto-approve
