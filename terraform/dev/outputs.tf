@@ -7,5 +7,5 @@ output "vm_extern_ip" {
 }
 
 output "vm_username" {
-  value = google_compute_instance.vm.metadata[0]
+  value = google_compute_instance.vm.metadata[0].ssh-keys
 }
