@@ -93,8 +93,7 @@ jobs:
           export IP_VM_EXT=$(terraform -chdir=./terraform/dev output vm_extern_ip)
           echo "$IP_VM_EXT"
           cle_privee="./id_rsa"
-          cle=cat "$cle_privee"
-          echo "$cle"
+          echo "${{ steps.generate_key.outputs.private_key }}"
           user=$(ssh-keygen -l -f "$cle_privee" | awk '{print $3}')
           echo "$user"
           #ssh "$user"@"$IP_VM_EXT"
