@@ -7,5 +7,5 @@ output "vm_extern_ip" {
 }
 
 output "vm_username" {
-  value = google_compute_instance.vm.metadata.ssh-keys
+  value = google_service_account.service_account.email
 }

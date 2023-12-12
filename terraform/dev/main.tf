@@ -43,13 +43,9 @@ resource "google_compute_firewall" "fw" {
   }
 }
 
-import {
-  id = "projects/var.project_name_id/serviceAccounts/data.google_client_openid_userinfo.me.email"
-  to = google_service_account.service_account
-}
-
 resource "google_service_account" "service_account" {
-
+  account_id   = "service-account-id"
+  display_name = "Service Account"
 }
 
 # Instance pour la machine virtuelle de dev
