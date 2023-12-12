@@ -92,8 +92,10 @@ jobs:
         if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
           export IP_VM_INT=$(terraform -chdir=./terraform/dev output vm_intern_ip)
           echo "$IP_VM_INT"
-          echo "${split("@", data.google_client_openid_userinfo.me.email)[0]}"
-
+          cle_privee="./id_rsa"
+          echo ssh-keygen -l -f "$cle_privee"
+          user=$(ssh-keygen -l -f "$cle_privee" | awk '{print $1}')
+          echo "$user"
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then 
           export IP_VM_INT=$(terraform -chdir=./terraform/dev output vm_intern_ip)
           echo "$IP_VM_INT"
