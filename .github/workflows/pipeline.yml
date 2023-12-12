@@ -94,8 +94,8 @@ jobs:
           echo "$IP_VM_EXT"
           export VM_USER=$(terraform -chdir=./terraform/dev output vm_username)
           echo "$VM_USER"
-          #user=$($VM_USER | awk '{print $1}')
-          #echo "$user"
+          user=$($VM_USER | awk '{print $1}')
+          echo "$user"
           #ssh "$user"@"$IP_VM_EXT"
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then 
           export IP_VM_INT=$(terraform -chdir=./terraform/dev output vm_extern_ip)
