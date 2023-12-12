@@ -7,5 +7,5 @@ output "vm_extern_ip" {
 }
 
 output "vm_username" {
-  value = google_client_openid_userinfo.me.email
+  value = data.google_client_openid_userinfo.me.email
 }
