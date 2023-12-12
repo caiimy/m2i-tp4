@@ -90,15 +90,16 @@ jobs:
     - name: connect to the VM with ssh
       run: |
         if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
-          export IP_VM_INT=$(terraform -chdir=./terraform/dev output vm_intern_ip)
-          echo "$IP_VM_INT"
+          export IP_VM_EXT=$(terraform -chdir=./terraform/dev output vm_extern_ip)
+          echo "$IP_VM_EXT"
           cle_privee="./id_rsa"
           ssh-keygen -l -f "$cle_privee"
           echo "$cle"
           user=$(ssh-keygen -l -f "$cle_privee" | awk '{print $3}')
           echo "$user"
+          #ssh "$user"@"$IP_VM_EXT"
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then 
-          export IP_VM_INT=$(terraform -chdir=./terraform/dev output vm_intern_ip)
+          export IP_VM_INT=$(terraform -chdir=./terraform/dev output vm_extern_ip)
           echo "$IP_VM_INT"
           ssh user@$IP_VM_INT
         fi
