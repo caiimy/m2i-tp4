@@ -98,14 +98,12 @@ jobs:
       run: |
         if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
           export IP_VM_EXT=$(terraform -chdir=./terraform/dev output -raw vm_extern_ip)
-          echo "$IP_VM_EXT"
           export VM_USER=$(terraform -chdir=./terraform/dev output -raw vm_username)
-          echo $VM_USER
           export USER=$(echo $VM_USER | awk '{print $1}' FS="@" OFS=" ")
-          echo Username est : $USER
           ssh $USER@$IP_VM_EXT
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then 
-          export IP_VM_INT=$(terraform -chdir=./terraform/dev output vm_extern_ip)
-          echo "$IP_VM_INT"
-          ssh user@$IP_VM_INT
+          export IP_VM_EXT=$(terraform -chdir=./terraform/dev output -raw vm_extern_ip)
+          export VM_USER=$(terraform -chdir=./terraform/dev output -raw vm_username)
+          export USER=$(echo $VM_USER | awk '{print $1}' FS="@" OFS=" ")
+          ssh $USER@$IP_VM_EXT
         fi

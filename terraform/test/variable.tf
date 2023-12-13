@@ -20,4 +20,8 @@ variable "project_name" {
     type = string
 }
 
+variable "project_name_id" {
+    type = string
+}
+
 variable "credentials_file" { }
