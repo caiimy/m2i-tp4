@@ -102,7 +102,11 @@ jobs:
           export IP_VM_EXT=$(terraform -chdir=./terraform/dev output -raw vm_extern_ip)
           export VM_USER=$(terraform -chdir=./terraform/dev output -raw vm_username)
           export USER=$(echo $VM_USER | awk '{print $1}' FS="@" OFS=" ")
-          cat ./id_rsa.pub | ssh USER@$IP_VM_EXT "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
+          echo " ------------ LS --------------" 
+          ls
+          echo " ------------ SSH -------------------"
+          ssh -o StrictHostKeyChecking=no -i ./id_rsa $USER@$IP_VM_EXT
+          # cat ./id_rsa.pub | ssh USER@$IP_VM_EXT "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
           #ssh-copy-id -i id_rsa.pub $IP_VM_EXT
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then 
           export IP_VM_EXT=$(terraform -chdir=./terraform/dev output -raw vm_extern_ip)
