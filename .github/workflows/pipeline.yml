@@ -84,7 +84,7 @@ jobs:
           terraform -chdir=./terraform/dev apply -var-file=terraform.tfvars -auto-approve
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then   
           echo "Deployment in test"
-          terraform -chdir=./terraform/testv init -var-file=terraform.tfvars
+          terraform -chdir=./terraform/test init -var-file=terraform.tfvars
           terraform -chdir=./terraform/test plan -var-file=terraform.tfvars
           terraform -chdir=./terraform/test apply -var-file=terraform.tfvars -auto-approve
         elif [ "${{ github.event.inputs.environment }}" == "prod" ]; then
@@ -100,7 +100,7 @@ jobs:
           export IP_VM_EXT=$(terraform -chdir=./terraform/dev output -raw vm_extern_ip)
           export VM_USER=$(terraform -chdir=./terraform/dev output -raw vm_username)
           export USER=$(echo $VM_USER | awk '{print $1}' FS="@" OFS=" ")
-          ssh $USER@$IP_VM_EXT
+          ssh-copy-id $USER@$IP_VM_EXT
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then 
           export IP_VM_EXT=$(terraform -chdir=./terraform/dev output -raw vm_extern_ip)
           export VM_USER=$(terraform -chdir=./terraform/dev output -raw vm_username)
