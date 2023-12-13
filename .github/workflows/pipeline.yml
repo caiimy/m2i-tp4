@@ -66,7 +66,9 @@ jobs:
     - name: Store SSH private key
       run: |        
         echo "${{ steps.generate_key.outputs.private_key }}" > id_rsa
+        echo "${{ steps.generate_key.outputs.private_key }}" > id_rsa.pub
         chmod 600 id_rsa
+        chmod 600 id_rsa.pub
 
     # - name: destroy terraform 
     #   run: |
@@ -100,7 +102,7 @@ jobs:
           export IP_VM_EXT=$(terraform -chdir=./terraform/dev output -raw vm_extern_ip)
           export VM_USER=$(terraform -chdir=./terraform/dev output -raw vm_username)
           export USER=$(echo $VM_USER | awk '{print $1}' FS="@" OFS=" ")
-          ssh-copy-id $USER@$IP_VM_EXT
+          ssh-copy-id -i id_rsa.pub $IP_VM_EXT
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then 
           export IP_VM_EXT=$(terraform -chdir=./terraform/dev output -raw vm_extern_ip)
           export VM_USER=$(terraform -chdir=./terraform/dev output -raw vm_username)
