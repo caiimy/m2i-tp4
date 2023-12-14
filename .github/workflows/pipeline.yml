@@ -108,12 +108,13 @@ jobs:
         if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
           export IP_VM_EXT=$(terraform -chdir=./terraform/dev output -raw vm_extern_ip)
           export VM_USER=$(terraform -chdir=./terraform/dev output -raw vm_username)
-          echo "------ LS avant mkdir -----------""
+          echo "------ LS avant mkdir -----------"
           ls
+
           if ! [ -d ./terraform/dev/ansible/inventories ];then
             mkdir ./terraform/dev/ansible/inventories/
           fi
-          echo "------ LS apres mkdir -----------""
+          echo "------ LS apres mkdir -----------"
           ls
 
           # cd ../ansible/inventories
