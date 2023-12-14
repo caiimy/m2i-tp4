@@ -78,6 +78,7 @@ jobs:
 
     - name: Activate google services API
       run: |
+        gcloud auth activate-service-account m2i-tp4-sa@m2i-tp4-bis.iam.gserviceaccount.com --key-file=./credentials.json --project="m2i-tp4-bis"
         gcloud services enable cloudresourcemanager.googleapis.com --project="m2i-tp4-bis"
         gcloud services enable compute.googleapis.com --project="m2i-tp4-bis"
         gcloud services enable iamcredentials.googleapis.com --project="m2i-tp4-bis"
