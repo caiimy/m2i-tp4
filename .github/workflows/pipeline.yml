@@ -78,10 +78,10 @@ jobs:
 
     - name: Activate google services API
       run: |
-        gcloud services cloudresourcemanager.googleapis.com --project="m2i-tp4-bis"
-        gcloud services compute.googleapis.com --project="m2i-tp4-bis"
-        gcloud services iamcredentials.googleapis.com --project="m2i-tp4-bis"
-        gcloud services serviceusage.googleapis.com --project="m2i-tp4-bis"
+        gcloud services enable cloudresourcemanager.googleapis.com --project="m2i-tp4-bis"
+        gcloud services enable compute.googleapis.com --project="m2i-tp4-bis"
+        gcloud services enable iamcredentials.googleapis.com --project="m2i-tp4-bis"
+        gcloud services enable serviceusage.googleapis.com --project="m2i-tp4-bis"
 
     - name: configure terraform 
       run: |
