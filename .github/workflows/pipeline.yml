@@ -81,7 +81,7 @@ jobs:
         gcloud auth activate-service-account m2i-tp4-sa@m2i-tp4-bis.iam.gserviceaccount.com --key-file=./credentials.json --project="m2i-tp4-bis"
         gcloud services enable cloudresourcemanager.googleapis.com --project="m2i-tp4-bis"
         gcloud services enable compute.googleapis.com --project="m2i-tp4-bis"
-        gcloud services enable iamcredentials.googleapis.com --project="m2i-tp4-bis"
+        gcloud services enable iam.googleapis.com --project="m2i-tp4-bis"
         gcloud services enable serviceusage.googleapis.com --project="m2i-tp4-bis"
 
     - name: configure terraform 
@@ -120,7 +120,7 @@ jobs:
             echo "[vm-dev]" >> hosts
             echo $IP_VM_EXT ansible_user=$USER ansible_connection=ssh ansible_private_key_file=~/.ssh/id_rsa >> hosts
           fi
-          sed -i "s/VmDev_ext_ip: " .*/VmDev_ext_ip: $IP_VM_EXT/" vars/default.yml
+          sed -i "s/VmDev_ext_ip: .*/VmDev_ext_ip: $IP_VM_EXT/" vars/default.yml
           ansible-playbook -i inventories/hosts playbook/playbook.yml
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then 
           export IP_VM_EXT=$(terraform -chdir=./terraform/dev output -raw vm_extern_ip)
