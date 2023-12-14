@@ -1,0 +1,7 @@
+# Variable 'vm-dev' internal IP :
+VmDev_ext_ip: "IP_address"
+  
+DOCKER_TOKEN: ${{ secrets.DOCKER_USERNAME }}
+DOCKER_USER: ${{ secrets.DOCKER_PASSWORD }}  
+CONTAINER_NAME: "vm-dev-image-docker"
+IMAGE_NAME: "${{ secrets.DOCKER_USERNAME }}/myimage:1.0.0"

@@ -14,13 +14,6 @@ data "google_client_openid_userinfo" "me" {
 #  force_destroy = true
 #}
 
-resource "google_project_service" "project" {
-  project = "${var.project_name_id}"
-  service = "iam.googleapis.com"
-
-  disable_dependent_services = true
-}
-
 resource "google_compute_network" "vpc_network" {
   name = "${var.project_name}-${var.env}-vpc-network"
 }

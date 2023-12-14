@@ -1,0 +1,31 @@
+---
+- name: "dev docker installation"
+  become: yes
+  hosts: vm-dev
+
+  vars_files:
+    - ../vars/default.yml
+
+  tasks:
+    - name: Installer Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+      notify: Redémarrer Docker
+
+    - name: Se connecter à Docker Hub
+      command: docker login --username={{ DOCKER_USER }} --password={{ DOCKER_TOKEN }}
+
+    - name: Pull Docker image
+      command: docker pull {{ DOCKER_USER }}/{{ IMAGE_NAME }}
+
+    - name: Run Docker container
+      command: docker run -d -p 80:80 --name {{ CONTAINER_NAME }} {{ DOCKER_USER }}/{{ IMAGE_NAME }}
+
+ 
+  handlers:
+    - name: Redémarrer Docker
+      service:
+        name: docker
+        state: restarted
