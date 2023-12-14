@@ -116,6 +116,8 @@ jobs:
           fi
           echo "------ LS apres mkdir -----------"
           ls
+          echo "--------- LS du terraform ansible "
+          ls ./terraform/dev/ansible
 
           # cd ../ansible/inventories
           # if ! [ -f hosts ]; then
