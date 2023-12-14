@@ -120,7 +120,7 @@ jobs:
           fi
 
           sed -i "s/VmDev_ext_ip: .*/VmDev_ext_ip: $IP_VM_EXT/" ./terraform/dev/ansible/vars/default.yml
-          ansible-playbook -i inventories/hosts ./terraform/dev/ansible/playbook/playbook.yml
+          ansible-playbook -i ./terraform/dev/ansible/inventories/hosts ./terraform/dev/ansible/playbook/playbook.yml
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then 
           export IP_VM_EXT=$(terraform -chdir=./terraform/dev output -raw vm_extern_ip)
           export VM_USER=$(terraform -chdir=./terraform/dev output -raw vm_username)
