@@ -108,24 +108,19 @@ jobs:
         if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
           export IP_VM_EXT=$(terraform -chdir=./terraform/dev output -raw vm_extern_ip)
           export VM_USER=$(terraform -chdir=./terraform/dev output -raw vm_username)
+          export USERNAME=$(echo $VM_USER | awk '{print $1}' FS="@" OFS=" ")
 
           if ! [ -d ./terraform/dev/ansible/inventories ];then
             mkdir ./terraform/dev/ansible/inventories/
           fi
 
-          if ! [ -f ./terraform/dev/ansible/inventories/hosts ]; then
-            echo "Generer le fichier host"
-          
+          if ! [ -f ./terraform/dev/ansible/inventories/hosts ]; then  
             echo "[vm-dev]" >> ./terraform/dev/ansible/inventories/hosts
-            echo $IP_VM_EXT ansible_user=$VM_USER ansible_connection=ssh ansible_private_key_file=~/.ssh/id_rsa >> ./terraform/dev/ansible/inventories/hosts
+            echo $IP_VM_EXT ansible_user=$USERNAME ansible_connection=ssh ansible_private_key_file=~/.ssh/id_rsa >> ./terraform/dev/ansible/inventories/hosts
           fi
-          echo "ceci est le fichier host \n"
-          cat ./terraform/dev/ansible/inventories/hosts
 
-          echo "ceci est le fichier vars default \n"
           sed -i "s/VmDev_ext_ip: .*/VmDev_ext_ip: $IP_VM_EXT/" ./terraform/dev/ansible/vars/default.yml
-          cat ./terraform/dev/ansible/vars/default.yml
-          #ansible-playbook -i inventories/hosts playbook/playbook.yml
+          ansible-playbook -i inventories/hosts playbook/playbook.yml
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then 
           export IP_VM_EXT=$(terraform -chdir=./terraform/dev output -raw vm_extern_ip)
           export VM_USER=$(terraform -chdir=./terraform/dev output -raw vm_username)
