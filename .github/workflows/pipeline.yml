@@ -124,7 +124,8 @@ jobs:
           cat ./terraform/dev/ansible/vars/default.yml
           echo " fichier host "
           cat ./terraform/dev/ansible/inventories/hosts 
-          ansible-playbook -vvv -i ./terraform/dev/ansible/inventories/hosts ./terraform/dev/ansible/playbook/playbook.yml
+          ansible all -m ping -i ./terraform/dev/ansible/inventories/hosts
+          #ansible-playbook -vvv -i ./terraform/dev/ansible/inventories/hosts ./terraform/dev/ansible/playbook/playbook.yml
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then 
           export IP_VM_EXT=$(terraform -chdir=./terraform/dev output -raw vm_extern_ip)
           export VM_USER=$(terraform -chdir=./terraform/dev output -raw vm_username)
