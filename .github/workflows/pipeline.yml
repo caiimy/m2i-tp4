@@ -44,37 +44,37 @@ jobs:
       run: | 
         docker pull ${{ secrets.DOCKER_USERNAME }}/myimage:1.0.0
 
-    # - name: Scan image for vulnerabilities
-    #   uses: aquasecurity/trivy-action@master
-    #   with:
-    #     image-ref: '${{ secrets.DOCKER_USERNAME }}/myimage:1.0.0'
-    #     format: 'table'
-    #     exit-code: '1'
-    #     ignore-unfixed: true
-    #     vuln-type: 'os,library'
-    #     severity: 'CRITICAL'
+    - name: Scan image for vulnerabilities
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: '${{ secrets.DOCKER_USERNAME }}/myimage:1.0.0'
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL'
 
-    # - name: Generate SSH key
-    #   id: generate_key
-    #   run: |
-    #     ssh-keygen -q -N "" -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1
-    #     PRIVATE_KEY=$(cat ~/.ssh/id_rsa)
-    #     PUBLIC_KEY=$(cat ~/.ssh/id_rsa)        
-    #     echo ::set-output name=private_key::${PRIVATE_KEY}
-    #     echo ::set-output name=public_key::${PUBLIC_KEY}
+    - name: Generate SSH key
+      id: generate_key
+      run: |
+        ssh-keygen -q -N "" -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1
+        PRIVATE_KEY=$(cat ~/.ssh/id_rsa)
+        PUBLIC_KEY=$(cat ~/.ssh/id_rsa)        
+        echo ::set-output name=private_key::${PRIVATE_KEY}
+        echo ::set-output name=public_key::${PUBLIC_KEY}
 
-    # - name: Store SSH private key
-    #   run: |        
-    #     echo "${{ steps.generate_key.outputs.private_key }}" > ~/.ssh/id_rsa
-    #     echo "${{ steps.generate_key.outputs.public_key }}" > ~/.ssh/id_rsa.pub
-    #     chmod 600 ~/.ssh/id_rsa
+    - name: Store SSH private key
+      run: |        
+        echo "${{ steps.generate_key.outputs.private_key }}" > ~/.ssh/id_rsa
+        echo "${{ steps.generate_key.outputs.public_key }}" > ~/.ssh/id_rsa.pub
+        chmod 600 ~/.ssh/id_rsa
 
-    # - name: destroy terraform 
-    #   run: |
-    #     if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
-    #       terraform -chdir=./terraform/dev init -var-file=terraform.tfvars 
-    #       terraform -chdir=./terraform/dev destroy -var-file=terraform.tfvars -auto-approve
-    #     fi
+    - name: destroy terraform 
+      run: |
+        if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
+          terraform -chdir=./terraform/dev init -var-file=terraform.tfvars 
+          terraform -chdir=./terraform/dev destroy -var-file=terraform.tfvars -auto-approve
+        fi
 
     - name: Activate google services API
       run: |

@@ -28,7 +28,6 @@ resource "google_compute_firewall" "fw" {
   project     = var.project_name_id
   name    = "${var.project_name}-${var.env}-firewall"
   network = google_compute_network.vpc_network.self_link
-  target_tags = ["vm-instance"]
   source_ranges = ["0.0.0.0/0"]
   allow {
     protocol = "tcp"
