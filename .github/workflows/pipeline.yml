@@ -69,12 +69,12 @@ jobs:
         echo "${{ steps.generate_key.outputs.public_key }}" > ~/.ssh/id_rsa.pub
         chmod 600 ~/.ssh/id_rsa
 
-    # - name: destroy terraform 
-    #   run: |
-    #     if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
-    #       terraform -chdir=./terraform/dev init -var-file=terraform.tfvars 
-    #       terraform -chdir=./terraform/dev destroy -var-file=terraform.tfvars -auto-approve
-    #     fi
+    - name: destroy terraform 
+      run: |
+        if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
+          terraform -chdir=./terraform/dev init -var-file=terraform.tfvars 
+          terraform -chdir=./terraform/dev destroy -var-file=terraform.tfvars -auto-approve
+        fi
 
     - name: Activate google services API
       run: |
