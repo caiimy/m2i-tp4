@@ -59,7 +59,7 @@ jobs:
       run: |
         ssh-keygen -q -N "" -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1
         PRIVATE_KEY=$(cat ~/.ssh/id_rsa)
-        PUBLIC_KEY=$(cat ~/.ssh/id_rsa)        
+        PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)        
         echo ::set-output name=private_key::${PRIVATE_KEY}
         echo ::set-output name=public_key::${PUBLIC_KEY}
 
