@@ -54,27 +54,27 @@ jobs:
     #     vuln-type: 'os,library'
     #     severity: 'CRITICAL'
 
-    - name: Generate SSH key
-      id: generate_key
-      run: |
-        ssh-keygen -q -N "" -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1
-        PRIVATE_KEY=$(cat ~/.ssh/id_rsa)
-        PUBLIC_KEY=$(cat ~/.ssh/id_rsa)        
-        echo ::set-output name=private_key::${PRIVATE_KEY}
-        echo ::set-output name=public_key::${PUBLIC_KEY}
+    # - name: Generate SSH key
+    #   id: generate_key
+    #   run: |
+    #     ssh-keygen -q -N "" -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1
+    #     PRIVATE_KEY=$(cat ~/.ssh/id_rsa)
+    #     PUBLIC_KEY=$(cat ~/.ssh/id_rsa)        
+    #     echo ::set-output name=private_key::${PRIVATE_KEY}
+    #     echo ::set-output name=public_key::${PUBLIC_KEY}
 
-    - name: Store SSH private key
-      run: |        
-        echo "${{ steps.generate_key.outputs.private_key }}" > ~/.ssh/id_rsa
-        echo "${{ steps.generate_key.outputs.public_key }}" > ~/.ssh/id_rsa.pub
-        chmod 600 ~/.ssh/id_rsa
+    # - name: Store SSH private key
+    #   run: |        
+    #     echo "${{ steps.generate_key.outputs.private_key }}" > ~/.ssh/id_rsa
+    #     echo "${{ steps.generate_key.outputs.public_key }}" > ~/.ssh/id_rsa.pub
+    #     chmod 600 ~/.ssh/id_rsa
 
-    - name: destroy terraform 
-      run: |
-        if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
-          terraform -chdir=./terraform/dev init -var-file=terraform.tfvars 
-          terraform -chdir=./terraform/dev destroy -var-file=terraform.tfvars -auto-approve
-        fi
+    # - name: destroy terraform 
+    #   run: |
+    #     if [ "${{ github.event.inputs.environment }}" == "dev" ]; then
+    #       terraform -chdir=./terraform/dev init -var-file=terraform.tfvars 
+    #       terraform -chdir=./terraform/dev destroy -var-file=terraform.tfvars -auto-approve
+    #     fi
 
     - name: Activate google services API
       run: |
@@ -124,7 +124,7 @@ jobs:
           cat ./terraform/dev/ansible/vars/default.yml
           echo " fichier host "
           cat ./terraform/dev/ansible/inventories/hosts 
-          ansible all -m ping -i ./terraform/dev/ansible/inventories/hosts
+          ansible -vvv all -m ping -i ./terraform/dev/ansible/inventories/hosts
           #ansible-playbook -vvv -i ./terraform/dev/ansible/inventories/hosts ./terraform/dev/ansible/playbook/playbook.yml
         elif [ "${{ github.event.inputs.environment }}" == "test" ]; then 
           export IP_VM_EXT=$(terraform -chdir=./terraform/dev output -raw vm_extern_ip)
