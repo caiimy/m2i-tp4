@@ -61,6 +61,7 @@ resource "google_compute_instance" "vm" {
 
   metadata = {
     ssh-keys = "${split("@", data.google_client_openid_userinfo.me.email)[0]}:${file("~/.ssh/id_rsa.pub")}"
+    enable-oslogin : "FALSE"
   }
 
   service_account {    
